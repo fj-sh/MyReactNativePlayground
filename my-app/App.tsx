@@ -2,6 +2,7 @@ import { PixelRatio, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { runTiming, useFont, useValue, Easing } from '@shopify/react-native-skia';
 import CircularProgress from './components/CircularProgress';
+import ReAnimatedCircularProgress from './components/ReAnimatedCircularProgress';
 
 const RADIUS = PixelRatio.roundToNearestPixel(130);
 const STROKE_WIDTH = 12;
