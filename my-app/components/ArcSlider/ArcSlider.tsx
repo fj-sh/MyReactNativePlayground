@@ -10,7 +10,11 @@ import {
 import React, { useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector, GestureHandlerRootView } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import Animated, {
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { polar2Canvas } from 'react-native-redash';
 
 const { width, height } = Dimensions.get('window');
@@ -40,9 +44,9 @@ export default function ArcSlider() {
   const previousPositionY = useSharedValue(y2);
   const percentComplete = useSharedValue(0);
 
-  const skiaCx = useValue(x2);
-  const skiaCy = useValue(y2);
-  const skiaPercentComplete = useValue(0);
+  const skiaCx = useDerivedValue(() => movableCx.value);
+  const skiaCy = useDerivedValue(() => movableCy.value);
+  const skiaPercentComplete = useDerivedValue(() => percentComplete.value);
 
   const gesture = Gesture.Pan()
     .onUpdate(({ translationX, translationY, absoluteX }) => {
@@ -84,17 +88,6 @@ export default function ArcSlider() {
       previousPositionX.value = movableCx.value;
       previousPositionY.value = movableCy.value;
     });
-
-  useSharedValueEffect(
-    () => {
-      skiaCx.current = movableCx.value;
-      skiaCy.current = movableCy.value;
-      skiaPercentComplete.current = percentComplete.value;
-    },
-    movableCx,
-    movableCy,
-    percentComplete
-  );
 
   const style = useAnimatedStyle(() => {
     return { height: 200, width: 300, opacity: percentComplete.value };
