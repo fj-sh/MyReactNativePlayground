@@ -7,6 +7,8 @@ https://docs.expo.dev/versions/latest/sdk/webview/
 
 React Native Share menu を使って、シェアされたときの挙動を定義する
 https://github.com/Expensify/react-native-share-menu
+↑
+シェア機能は使えない
 
 HTMLからタイトルと本文の要約を取得してみる
 https://github.com/meliorence/react-native-render-html
