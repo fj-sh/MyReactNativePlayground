@@ -1,6 +1,7 @@
 import Browser from '../../components/Browser';
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function Page() {
   return (
