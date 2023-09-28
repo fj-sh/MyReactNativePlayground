@@ -16,6 +16,9 @@ export default function Page() {
       <Link href={'/samples/browser'} style={styles.linkButton}>
         <Text style={styles.linkText}>Browser</Text>
       </Link>
+      <Link href={'/samples/lottie'} style={styles.linkButton}>
+        <Text style={styles.linkText}>lottie</Text>
+      </Link>
     </View>
   );
 }
