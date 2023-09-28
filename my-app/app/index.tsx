@@ -13,6 +13,9 @@ export default function Page() {
       <Link href={'/samples/neumorphism'} style={styles.linkButton}>
         <Text style={styles.linkText}>Neumorphism</Text>
       </Link>
+      <Link href={'/samples/browser'} style={styles.linkButton}>
+        <Text style={styles.linkText}>Browser</Text>
+      </Link>
     </View>
   );
 }
