@@ -16,6 +16,17 @@ https://github.com/meliorence/react-native-render-html
 ExpoでLottieを使う
 https://www.youtube.com/watch?v=qUoEINqKyCc&t=173s
 
+Listの並べかえを実装する
+https://www.youtube.com/watch?v=Ia2y0GDEuPc
+https://www.youtube.com/watch?v=p8U4uWhyIrY
+https://gist.github.com/eveningkid/00dc171095eb6d64f45afdbaa50a76c3
+
+Swipe to Delete
+https://www.youtube.com/watch?v=1d8a_NZ9l1E
+https://github.com/wcandillon/can-it-be-done-in-react-native/tree/master/season3/src/UberEatsSwipe
+
+Expo Development Build
+https://www.youtube.com/watch?v=Iw8FAUftJFU
 
 Trackingについて
 https://docs.expo.dev/versions/latest/sdk/tracking-transparency/

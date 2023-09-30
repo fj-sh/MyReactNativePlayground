@@ -19,6 +19,9 @@ export default function Page() {
       <Link href={'/samples/lottie'} style={styles.linkButton}>
         <Text style={styles.linkText}>lottie</Text>
       </Link>
+      <Link href={'/samples/sort-list'} style={styles.linkButton}>
+        <Text style={styles.linkText}>SortableList</Text>
+      </Link>
     </View>
   );
 }

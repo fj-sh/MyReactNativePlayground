@@ -1,11 +1,12 @@
-import LottieExample from '../../components/Lottie/LottieExample';
+import Browser from '../../components/Browser';
 import { StyleSheet, Text, View } from 'react-native';
 import { Link } from 'expo-router';
+import SortableList from '../../components/SortList/SortableList';
 
 export default function Page() {
   return (
     <>
-      <LottieExample />
+      <SortableList />
       <View style={styles.linkContainer}>
         <Link href={'/'} style={styles.linkButton}>
           <Text style={styles.linkText}>Home</Text>
