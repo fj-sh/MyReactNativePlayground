@@ -14,7 +14,14 @@ import { Platform, useWindowDimensions, View, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { BlurView } from 'expo-blur';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import {
+  Gesture,
+  GestureDetector,
+  type GestureStateChangeEvent,
+  GestureTouchEvent,
+  type LongPressGestureHandlerEventPayload,
+  PanGestureHandler,
+} from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { clamp } from 'react-native-redash';
 
@@ -160,6 +167,18 @@ export default function MovableSong({
     },
   });
 
+  const longPress = Gesture.LongPress().onStart(
+    (event: GestureStateChangeEvent<LongPressGestureHandlerEventPayload>) => {
+      runOnJS(setMoving)(true);
+
+      console.log('event.absoluteY:', event.absoluteY);
+
+      if (Platform.OS === 'ios') {
+        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+      }
+    }
+  );
+
   const animatedStyle = useAnimatedStyle(() => {
     return {
       position: 'absolute',
@@ -177,14 +196,75 @@ export default function MovableSong({
     };
   }, [moving]);
 
+  const isLongPressed = useSharedValue(false);
+  const panGesture = Gesture.Pan()
+    .manualActivation(true)
+    .onTouchesMove((event, stateManager) => {
+      if (isLongPressed.value) {
+        stateManager.activate();
+      } else {
+        stateManager.fail();
+      }
+      runOnJS(setMoving)(true);
+
+      if (Platform.OS === 'ios') {
+        runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Medium);
+      }
+    })
+    .onUpdate((event) => {
+      console.log(event.x);
+      const positionY = event.absoluteY + scrollY.value;
+
+      if (positionY <= scrollY.value + SCROLL_HEIGHT_THRESHOLD) {
+        // Scroll up
+        scrollY.value = withTiming(0, { duration: 1500 });
+      } else if (positionY >= scrollY.value + dimensions.height - SCROLL_HEIGHT_THRESHOLD) {
+        // Scroll down
+        const contentHeight = songsCount * SONG_HEIGHT;
+        const containerHeight = dimensions.height - insets.top - insets.bottom;
+        const maxScroll = contentHeight - containerHeight;
+        scrollY.value = withTiming(maxScroll, { duration: 1500 });
+      } else {
+        cancelAnimation(scrollY);
+      }
+
+      top.value = withTiming(positionY - SONG_HEIGHT, {
+        duration: 16,
+      });
+
+      const newPosition = clamp(Math.floor(positionY / SONG_HEIGHT), 0, songsCount - 1);
+
+      if (newPosition !== positions.value[id]) {
+        positions.value = objectMove(positions.value, positions.value[id], newPosition);
+
+        if (Platform.OS === 'ios') {
+          runOnJS(Haptics.impactAsync)(Haptics.ImpactFeedbackStyle.Light);
+        }
+      }
+    })
+    .onTouchesUp(() => {
+      isLongPressed.value = false;
+      top.value = positions.value[id] * SONG_HEIGHT;
+      runOnJS(setMoving)(false);
+    });
+
+  // 以下の stackoverflow の回答を参考にした
+  // https://stackoverflow.com/questions/70715041/how-do-i-implement-a-drag-after-a-long-press-using-react-native-gesture-handler
+  const composed = Gesture.Simultaneous(longPress, panGesture);
+
   return (
     <Animated.View style={animatedStyle}>
       <BlurView intensity={moving ? 100 : 0} tint="light">
-        <PanGestureHandler onGestureEvent={gestureHandler}>
+        {/* <PanGestureHandler onGestureEvent={gestureHandler}> */}
+        {/*   <Animated.View style={{ maxWidth: '80%' }}> */}
+        {/*     <Song artist={artist} cover={cover} title={title} /> */}
+        {/*   </Animated.View> */}
+        {/* </PanGestureHandler> */}
+        <GestureDetector gesture={composed}>
           <Animated.View style={{ maxWidth: '80%' }}>
             <Song artist={artist} cover={cover} title={title} />
           </Animated.View>
-        </PanGestureHandler>
+        </GestureDetector>
       </BlurView>
     </Animated.View>
   );
