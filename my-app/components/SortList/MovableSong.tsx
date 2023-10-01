@@ -9,7 +9,6 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
-import { SCROLL_HEIGHT_THRESHOLD, SONG_HEIGHT } from './SortableList';
 import { Platform, useWindowDimensions, View, Text, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useState } from 'react';
@@ -18,9 +17,7 @@ import {
   Gesture,
   GestureDetector,
   type GestureStateChangeEvent,
-  GestureTouchEvent,
   type LongPressGestureHandlerEventPayload,
-  PanGestureHandler,
 } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 import { clamp } from 'react-native-redash';
@@ -44,6 +41,8 @@ interface MovableSongProps extends SongProps {
   songsCount: number;
 }
 
+export const SONG_HEIGHT = 70;
+export const SCROLL_HEIGHT_THRESHOLD = SONG_HEIGHT;
 function Song({ artist, cover, title }: SongProps) {
   return (
     <View

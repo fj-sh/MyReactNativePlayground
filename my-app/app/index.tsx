@@ -1,7 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
+import { usePersonStore } from '../lib/store/usePersonStore';
 
 export default function Page() {
+  const firstName = usePersonStore((state) => state.firstName);
   return (
     <View style={styles.container}>
       <Link href={'/samples/skia-circular-progress'} style={styles.linkButton}>
@@ -21,6 +23,13 @@ export default function Page() {
       </Link>
       <Link href={'/samples/sort-list'} style={styles.linkButton}>
         <Text style={styles.linkText}>SortableList</Text>
+      </Link>
+      <Link href={'/samples/swipe-to-delete'} style={styles.linkButton}>
+        <Text style={styles.linkText}>SwipeToDelete</Text>
+      </Link>
+
+      <Link href={'/samples/zustand'} style={styles.linkButton}>
+        <Text style={styles.linkText}>{firstName}</Text>
       </Link>
     </View>
   );

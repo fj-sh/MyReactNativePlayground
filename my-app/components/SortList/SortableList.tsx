@@ -8,7 +8,7 @@ import Animated, {
   scrollTo,
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
-import MovableSong from './MovableSong';
+import MovableSong, { SONG_HEIGHT } from './MovableSong';
 
 function clamp(value: number, lowerBound: number, upperBound: number): number {
   'worklet';
@@ -45,9 +45,6 @@ function listToObject(list: SongType[]): Record<string, number> {
 
   return object;
 }
-
-export const SONG_HEIGHT = 70;
-export const SCROLL_HEIGHT_THRESHOLD = SONG_HEIGHT;
 
 export default function SortableList() {
   const positions = useSharedValue(listToObject(SONGS));
