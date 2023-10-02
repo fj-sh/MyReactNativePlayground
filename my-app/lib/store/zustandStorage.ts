@@ -1,4 +1,4 @@
-import { persist, type StateStorage } from 'zustand/middleware';
+import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware';
 import { MMKV } from 'react-native-mmkv';
 import { Appearance } from 'react-native';
 import { create } from 'zustand';
@@ -34,9 +34,7 @@ export const useAppPersistStore = create<AppPersistStore, [['zustand/persist', A
     }),
     {
       name: 'app-persist-storage',
-      getStorage: () => zustandMMKVStorage,
-      serialize: (state) => JSON.stringify(state),
-      deserialize: (state) => JSON.parse(state),
+      storage: createJSONStorage(() => zustandMMKVStorage),
     }
   )
 );

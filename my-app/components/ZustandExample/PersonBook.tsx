@@ -2,7 +2,6 @@
 
 import { usePersonStore } from '../../lib/store/usePersonStore';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
-import MusicPlayer from '../MusicPlayer/MusicPlayer';
 
 export default function PersonBook() {
   const firstName = usePersonStore((state) => state.firstName);
@@ -10,7 +9,6 @@ export default function PersonBook() {
 
   return (
     <View style={styles.container}>
-      <MusicPlayer />
       <Text style={styles.label}>First Name:</Text>
       <Text style={styles.name}>{firstName}</Text>
       <TextInput
